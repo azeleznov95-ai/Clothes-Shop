@@ -16,7 +16,7 @@
             return ResponseEntity.status(409).body(errorResponse);
 
         }
-        public ResponseEntity<ErrorResponse>  IncorrectLoginOrPasswordExceptionHandle(incorrectLoginOrPasswordException ex){
+        public ResponseEntity<ErrorResponse>  IncorrectLoginOrPasswordExceptionHandle(IncorrectLoginOrPasswordException ex){
             ErrorResponse errorResponse= new ErrorResponse();
             errorResponse.setTimestamp(LocalDateTime.now());
             errorResponse.setStatus(401);

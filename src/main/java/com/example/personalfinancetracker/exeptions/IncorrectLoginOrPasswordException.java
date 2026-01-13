@@ -1,7 +1,7 @@
 package com.example.personalfinancetracker.exeptions;
 
-public class incorrectLoginOrPasswordException extends RuntimeException{
-    public incorrectLoginOrPasswordException(String message){
+public class IncorrectLoginOrPasswordException extends RuntimeException{
+    public IncorrectLoginOrPasswordException(String message){
         super(message);
     }
 }

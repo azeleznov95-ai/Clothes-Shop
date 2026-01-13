@@ -1,7 +1,7 @@
 package com.example.personalfinancetracker.service;
 
 import com.example.personalfinancetracker.exeptions.ConflictException;
-import com.example.personalfinancetracker.exeptions.incorrectLoginOrPasswordException;
+import com.example.personalfinancetracker.exeptions.IncorrectLoginOrPasswordException;
 import com.example.personalfinancetracker.model.User;
 import com.example.personalfinancetracker.repository.UserRepository;
 import com.example.personalfinancetracker.security.JWToken;
@@ -22,7 +22,7 @@ public class AuthorizationService {
         this.jwToken = jwToken;
 
     }
-    public String register(String login, String password) throws ConflictException, incorrectLoginOrPasswordException {
+    public String register(String login, String password) throws ConflictException, IncorrectLoginOrPasswordException {
         Optional<User> userRepositoryEntity =userRepository.findUserByLogin(login);
         if (userRepositoryEntity.isPresent()){
             throw new ConflictException("Login already exists");
@@ -34,10 +34,10 @@ public class AuthorizationService {
         userRepository.save(userEntity);
         return login(login,password);
     }
-    public String login(String login,String passwordHash) throws incorrectLoginOrPasswordException {
+    public String login(String login,String passwordHash) throws IncorrectLoginOrPasswordException {
         Optional<User> userEntity = userRepository.findUserByLogin(login);
         if (userEntity.isEmpty()){
-            throw new incorrectLoginOrPasswordException("No user with this login");
+            throw new IncorrectLoginOrPasswordException("No user with this login");
         }
         if (encoder.matches(passwordHash,userEntity.get().getPasswordHash())){
             Long userId = userEntity.get().getId();
@@ -46,7 +46,7 @@ public class AuthorizationService {
             claims.put("userId",String.valueOf(userId));
         return jwToken.createToken(claims,login);
         }
-        throw new incorrectLoginOrPasswordException("Login or password is incorrect");
+        throw new IncorrectLoginOrPasswordException("Login or password is incorrect");
     }
 
 }
