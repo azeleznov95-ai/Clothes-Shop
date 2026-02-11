@@ -3,6 +3,7 @@ package com.example.clothesshop.service;
 import com.example.clothesshop.dto.NewsRequestDto;
 import com.example.clothesshop.dto.NewsResponseDto;
 import com.example.clothesshop.exeptions.BadNewsRequestException;
+
 import com.example.clothesshop.exeptions.NewsNotFoundException;
 import com.example.clothesshop.mapper.NewsMapper;
 import com.example.clothesshop.model.News;
@@ -10,8 +11,10 @@ import com.example.clothesshop.repository.NewsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class NewsService {
@@ -32,25 +35,32 @@ public class NewsService {
             throw new BadNewsRequestException("There are no images ");
             }
         Optional<News> oldNews = newsRepository.getNewsByIsActive(true);
-        if(oldNews.isPresent()) {
-            News oldEntity = oldNews.get();
-            oldEntity.setIsActive(false);
-            newsRepository.save(oldEntity);
 
-
-        }
         News updatedNews = mapper.toEntity(requestDto);
         newsRepository.save(updatedNews);
         return mapper.toResponse(updatedNews);
     }
-    public NewsResponseDto getNews(){
-        Optional <News> newsOpt =  newsRepository.getNewsByIsActive(true);
-        if (newsOpt.isEmpty()){
-            throw new NewsNotFoundException("No active news available");
+    public List<NewsResponseDto> getNews(){
+        var activeNews = newsRepository.findAllByIsActive(true);
+        if(activeNews.isEmpty()){
+            throw new NewsNotFoundException("No news are available");
         }
-        var newsEntity = newsOpt.get();
-        return mapper.toResponse(newsEntity);
+        if(activeNews.size()>3){
+            activeNews = activeNews.stream()
+                    .sorted(Comparator
+                    .comparing(News::getCreatedAt).reversed())
+                    .limit(3)
+                    .toList();
+
+        }
+        var responseNews = new ArrayList<NewsResponseDto>();
+        for(News news: activeNews){
+            responseNews.add(mapper.toResponse(news));
+        }
+        return responseNews;
+
     }
+
     public List<NewsResponseDto> getNewsList(){
         List<News> newsList = newsRepository.findAll();
         List<NewsResponseDto> responseList = new ArrayList<>();

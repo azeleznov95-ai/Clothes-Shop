@@ -16,7 +16,7 @@ public class NewsController {
         this.newsService = newsService;
     }
 @GetMapping
-    public ResponseEntity<NewsResponseDto> getNews(){
+    public ResponseEntity<List<NewsResponseDto>> get3NewsForUser(){
         var news = newsService.getNews();
         return ResponseEntity.ok(news);
     }

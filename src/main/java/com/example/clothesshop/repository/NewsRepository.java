@@ -10,5 +10,8 @@ import java.util.Optional;
 @Repository
 public interface NewsRepository extends JpaRepository<News,Long> {
     Optional<News> getNewsByIsActive(boolean isActive);
+    List<News> findAllByIsActiveIsTrue();
     List<News> findAll();
+
+    List<News> findAllByIsActive(boolean isActive);
 }

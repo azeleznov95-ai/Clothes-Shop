@@ -69,7 +69,7 @@
         }
 
         @ExceptionHandler(NewsNotFoundException.class)
-        public ResponseEntity<ErrorResponseDto> badClothRequestHandle(NewsNotFoundException ex) {
+        public ResponseEntity<ErrorResponseDto> NewsNotFoundHandle(NewsNotFoundException ex) {
             ErrorResponseDto errorResponse = new ErrorResponseDto();
             errorResponse.setStatus(404);
             errorResponse.setTimestamp(LocalDateTime.now());
@@ -78,7 +78,7 @@
         }
 
         @ExceptionHandler(BadNewsRequestException.class)
-        public ResponseEntity<ErrorResponseDto> badClothRequestHandle(BadNewsRequestException ex) {
+        public ResponseEntity<ErrorResponseDto> badNewsRequestHandle(BadNewsRequestException ex) {
             ErrorResponseDto errorResponse = new ErrorResponseDto();
             errorResponse.setStatus(400);
             errorResponse.setTimestamp(LocalDateTime.now());
