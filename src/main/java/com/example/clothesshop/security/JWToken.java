@@ -1,6 +1,6 @@
 package com.example.clothesshop.security;
 
-import com.example.clothesshop.exeptions.IdIsInvalid;
+import com.example.clothesshop.exeptions.IdIsInvalidException;
 import com.example.clothesshop.exeptions.IncorrectLoginOrPasswordException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -51,7 +51,7 @@ public class JWToken {
         if (id!=null){
             return id;
         }
-        throw new IdIsInvalid("Id is invalid");
+        throw new IdIsInvalidException("Id is invalid");
     }
     public String extractLogin(String token){
         Claims claims = parseClaims(token);

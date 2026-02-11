@@ -1,6 +1,6 @@
 package com.example.clothesshop.model;
 
-import com.example.clothesshop.enums.Size;
+import com.example.clothesshop.enums.SizeEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,10 +23,10 @@ public class Clothes {
     @Column(nullable = true)
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable( joinColumns = @JoinColumn(name = "clothes_id"))
+    @CollectionTable( joinColumns = @JoinColumn())
     @Enumerated(EnumType.STRING)
     @Column()
-    Set<Size> setSize;
+    Set<SizeEnum> setSize;
     @Column()
     String imageUrl;
     @Column()

@@ -1,6 +1,6 @@
 package com.example.clothesshop.model;
 
-import com.example.clothesshop.enums.Roles;
+import com.example.clothesshop.enums.RolesEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +25,7 @@ public class User {
         @Column(nullable = true,unique = true)
         private  Long telegramId;
         @Column(nullable = false)
-        private Roles role=Roles.User;
+        private RolesEnum role= RolesEnum.User;
 
 
 }

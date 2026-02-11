@@ -3,7 +3,7 @@ package com.example.clothesshop.service;
 import com.example.clothesshop.dto.ClothChangeAmountRequestDto;
 import com.example.clothesshop.dto.ClothesAddRequestDto;
 import com.example.clothesshop.dto.ClothesResponseDto;
-import com.example.clothesshop.exeptions.BadClothesRequest;
+import com.example.clothesshop.exeptions.BadClothesRequestException;
 import com.example.clothesshop.mapper.ClothesMapper;
 import com.example.clothesshop.model.Clothes;
 import com.example.clothesshop.repository.ClothesRepository;
@@ -25,19 +25,19 @@ private final ClothesMapper mapper;
     }
     public ClothesResponseDto create(ClothesAddRequestDto requestDto){
         if (requestDto.getName()==null|| requestDto.getName().isBlank()){
-            throw new BadClothesRequest("Name is null or blank");
+            throw new BadClothesRequestException("Name is null or blank");
         }
         if (requestDto.getPrice() == null){
-            throw new BadClothesRequest("Price is null");
+            throw new BadClothesRequestException("Price is null");
         }
         if (requestDto.getPrice()<=0){
-            throw new BadClothesRequest("Price must be more than zero");
+            throw new BadClothesRequestException("Price must be more than zero");
         }
         if (requestDto.getRemainingAmount()==null){
-            throw new BadClothesRequest("remaining amount is null");
+            throw new BadClothesRequestException("remaining amount is null");
         }
         if (requestDto.getRemainingAmount()<0){
-            throw new BadClothesRequest("remaining amount must be more than zero or equal");
+            throw new BadClothesRequestException("remaining amount must be more than zero or equal");
         }
         var entity = mapper.toEntity(requestDto);
         var saved = clothesRepository.save(entity);
@@ -46,7 +46,7 @@ private final ClothesMapper mapper;
     public ClothesResponseDto getById(Long id){
         Optional<Clothes> clothOpt= clothesRepository.findClothesById(id);
     if (clothOpt.isEmpty()){
-        throw new BadClothesRequest("Cloth doesn't exist");
+        throw new BadClothesRequestException("Cloth doesn't exist");
 
     }
     Clothes cloth = clothOpt.get();
@@ -65,16 +65,16 @@ private final ClothesMapper mapper;
 
         var clothOpt = clothesRepository.findClothesById(requestDto.getId());
         if (clothOpt.isEmpty()){
-            throw new BadClothesRequest("Id doesn't match any exising cloth");
+            throw new BadClothesRequestException("Id doesn't match any exising cloth");
 
         }
 
         var cloth = clothOpt.get();
         if (cloth.getRemainingAmount() + delta < 0){
-            throw new BadClothesRequest("Resulting remainingAmount cannot be negative");
+            throw new BadClothesRequestException("Resulting remainingAmount cannot be negative");
         }
         if (delta ==0){
-            throw new BadClothesRequest("delta is zero");
+            throw new BadClothesRequestException("delta is zero");
         }
 
         cloth.setRemainingAmount(cloth.getRemainingAmount()+delta);

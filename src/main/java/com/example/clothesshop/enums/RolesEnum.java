@@ -1,5 +1,5 @@
 package com.example.clothesshop.enums;
 
-public enum Roles {
+public enum RolesEnum {
     User,Admin
 }

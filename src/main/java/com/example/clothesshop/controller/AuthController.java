@@ -1,6 +1,6 @@
 package com.example.clothesshop.controller;
 
-import com.example.clothesshop.dto.AuthorizationRequest;
+import com.example.clothesshop.dto.AuthorizationRequestDto;
 import com.example.clothesshop.service.AuthorizationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class AuthController {
         this.authService=authService;
     }
     @PostMapping("/auth/register")
-    public ResponseEntity<String> registration(@RequestBody @Valid AuthorizationRequest authRequest){
+    public ResponseEntity<String> registration(@RequestBody @Valid AuthorizationRequestDto authRequest){
         String login = authRequest.getLogin();
         String password=authRequest.getPassword();
         String jwToken =authService.register(login,password);
@@ -26,7 +26,7 @@ public class AuthController {
 
     }
     @PostMapping("/auth/login")
-    public  ResponseEntity<String> login(@RequestBody @Valid AuthorizationRequest authRequest){
+    public  ResponseEntity<String> login(@RequestBody @Valid AuthorizationRequestDto authRequest){
         String login = authRequest.getLogin();
         String password = authRequest.getPassword();
         String jwToken = authService.login(login,password);

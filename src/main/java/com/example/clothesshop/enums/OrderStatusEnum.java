@@ -1,5 +1,5 @@
 package com.example.clothesshop.enums;
 
-public enum OrderStatus {
+public enum OrderStatusEnum {
     CREATED, PAID,FAILED
 }

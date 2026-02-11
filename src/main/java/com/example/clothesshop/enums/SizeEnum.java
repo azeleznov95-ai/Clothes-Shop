@@ -1,5 +1,5 @@
 package com.example.clothesshop.enums;
 
-public enum Size {
+public enum SizeEnum {
     XXS,XS,S,M,L,XL,XXL;
 }

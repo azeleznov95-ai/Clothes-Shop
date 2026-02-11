@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class AuthorizationRequest {
+public class AuthorizationRequestDto {
     @NonNull
     @NotBlank
     String login;
