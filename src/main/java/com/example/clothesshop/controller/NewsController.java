@@ -22,13 +22,13 @@ public class NewsController {
         return ResponseEntity.ok(news);
     }
 @Transactional
-@PutMapping
+@PutMapping("/admin/put")
     public ResponseEntity<NewsResponseDto> putNews(@RequestBody NewsRequestDto newsRequestDto){
         var response = newsService.putNews(newsRequestDto);
         return ResponseEntity.ok(response);
 }
 //todo: админский доступ
-@GetMapping("/latest")
+@GetMapping("admin/latest")
         public ResponseEntity<List<NewsResponseDto>> getNewsList(){
         var response = newsService.getNewsList();
         return ResponseEntity.ok(response);

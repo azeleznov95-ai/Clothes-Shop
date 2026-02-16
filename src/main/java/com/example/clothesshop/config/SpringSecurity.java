@@ -18,11 +18,11 @@ public class SpringSecurity {
         http
                 .csrf(csrf -> csrf.disable()) // Для примера, с JWT обычно disable
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/news/**").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()// Публичные
-                        .requestMatchers("/api/clothes/**").hasRole("ADMIN") // Только админ
-                        .requestMatchers("/api/cart/**").hasAnyRole("USER", "ADMIN") // Пользователь или админ
-                        .anyRequest().authenticated()// Остальное — авторизованным
+
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        .requestMatchers("/api/cart/**").hasAnyRole("USER", "ADMIN")
+                        .anyRequest().permitAll()
                 );
                 return http.build();
     }

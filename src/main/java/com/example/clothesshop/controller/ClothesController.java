@@ -20,7 +20,7 @@ public class ClothesController {
     ClothesController(ClothesService clothesService){
         this.clothesService=clothesService;
     }
-    @PostMapping()
+    @PostMapping("/admin")
     public ResponseEntity<ClothesResponseDto> addClothes(@RequestBody @Valid ClothesAddRequestDto req){
         ClothesResponseDto response =clothesService.create(req);
         return ResponseEntity.status(201).body(response);
@@ -34,7 +34,7 @@ public class ClothesController {
     public  ResponseEntity<List<ClothesResponseDto>> getList(){
         return ResponseEntity.status(200).body(clothesService.getList());
     }
-    @PatchMapping()
+    @PatchMapping("/admin")
     @Transactional
     public  ResponseEntity<ClothesResponseDto> updateAmount(@RequestBody @Valid ClothChangeAmountRequestDto changeAmountRequest){
         var changedResponse =clothesService.changeAmount(changeAmountRequest);
