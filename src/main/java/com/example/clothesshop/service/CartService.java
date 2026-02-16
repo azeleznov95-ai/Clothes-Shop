@@ -9,14 +9,15 @@ import com.example.clothesshop.mapper.CartMapper;
 
 import com.example.clothesshop.model.Cart;
 import com.example.clothesshop.model.CartItem;
+import com.example.clothesshop.repository.CartItemRepository;
 import com.example.clothesshop.repository.CartRepository;
 import com.example.clothesshop.repository.ClothesRepository;
-import com.example.clothesshop.repository.UserRepository;
+
 import com.example.clothesshop.security.JWToken;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.ArrayList;
 
 
 
@@ -26,19 +27,18 @@ public class CartService {
     private final JWToken jwToken;
     private final CartMapper cartMapper;
     private final ClothesRepository clothesRepository;
-    private final UserRepository userRepository;
+    private final CartItemRepository cartItemRepository;
 
-    CartService(CartRepository cartRepository,
+    CartService(CartRepository cartRepository, CartItemRepository cartItemRepository,
                 JWToken jwToken,
                 CartMapper cartMapper,
-                ClothesRepository clothesRepository,
-                UserRepository usersRepository
-                ){
+                ClothesRepository clothesRepository){
+        this.cartItemRepository=cartItemRepository;
         this.cartRepository = cartRepository;
         this.jwToken = jwToken;
         this.cartMapper = cartMapper;
         this.clothesRepository = clothesRepository;
-        this.userRepository = usersRepository;
+
     }
     private Integer getTotalPrice(Cart cart){
         var totalPrice = 0;
@@ -52,12 +52,12 @@ public class CartService {
     }
     public CartResponseDto getCart(String token){
         Long userId = jwToken.extractUserId(token);
-        var cartOpt = cartRepository.findCartByUser_Id(userId);
+        var cartOpt = cartRepository.findCartByUserId(userId);
         if (cartOpt.isEmpty()){
             var totalPrice = 0;
             Cart cart = new Cart();
-            cart.setUser((userRepository.findUserById(userId)));
-            cart.setCartItems(List.of());
+            cart.setUserId(userId);
+            cart.setCartItems(new ArrayList<>());
             cartRepository.save(cart);
             return cartMapper.toResponse(cart,totalPrice);
         }
@@ -72,7 +72,7 @@ public class CartService {
     public CartResponseDto changeAmount(String token, CartItemToChangeAmountRequestDto requestDto){
 
         var userId = jwToken.extractUserId(token);
-        var cartOpt = cartRepository.findCartByUser_Id(userId);
+        var cartOpt = cartRepository.findCartByUserId(userId);
 
 
         if (cartOpt.isEmpty()){
@@ -108,7 +108,17 @@ public class CartService {
 
     }
     public CartResponseDto addToCart(String token,Long itemId){
-        var cart = getCart(token);
+        var cartOpt = cartRepository.findCartByUserId(jwToken.extractUserId(token));
+        Cart cart;
+        if (cartOpt.isEmpty()){
+            cart = cartMapper.toEntity(getCart(token));
+            cartRepository.save(cart);
+        }
+        else{
+            cart = cartOpt.get();
+
+        }
+
         var clothOpt = clothesRepository.findClothesById(itemId);
         if (clothOpt.isEmpty()){
             throw new BadCartRequestException("Item with this id not found");
@@ -122,12 +132,15 @@ public class CartService {
         cartItem.setImageUrl(cloth.getImageUrl());
         cartItem.setPriceSnapshot(cloth.getPrice());
         cart.setCartStatus(CartStatus.UPDATED);
+        cartItemRepository.save(cartItem);
         var cartItems =cart.getCartItems();
         cartItems.add(cartItem);
-        return cart;
+        cartRepository.save(cart);
+
+        return cartMapper.toResponse(cart,getTotalPrice(cart));
     }
     public CartResponseDto removeFromCart(String token,Long itemId){
-            var cartOpt = cartRepository.findCartByUser_Id(jwToken.extractUserId(token));
+            var cartOpt = cartRepository.findCartByUserId(jwToken.extractUserId(token));
             if (cartOpt.isEmpty()){
                 throw new CartNotFoundException("Cart is not found");
             }
@@ -140,5 +153,6 @@ public class CartService {
             cartItems.removeIf(item -> item.getId().equals(itemId));
             cart.setCartItems(cartItems);
             var totalPrice = getTotalPrice(cart);
+            cartRepository.save(cart);
             return cartMapper.toResponse(cart,totalPrice);
 }}

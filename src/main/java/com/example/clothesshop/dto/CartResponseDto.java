@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,7 +16,7 @@ import java.util.List;
 public class CartResponseDto {
         private Long userId;
 
-        private List<CartItem> cartItems = List.of();
+        private List<CartItem> cartItems = new ArrayList<>();
         private CartStatus cartStatus = CartStatus.EMPTY;
         private Integer totalPrice;
 

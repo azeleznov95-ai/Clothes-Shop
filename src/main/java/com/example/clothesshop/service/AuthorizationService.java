@@ -1,5 +1,6 @@
 package com.example.clothesshop.service;
 
+import com.example.clothesshop.enums.RolesEnum;
 import com.example.clothesshop.exeptions.ConflictException;
 import com.example.clothesshop.exeptions.IncorrectLoginOrPasswordException;
 import com.example.clothesshop.model.Users;
@@ -34,16 +35,18 @@ public class AuthorizationService {
         userRepository.save(userEntity);
         return login(login,password);
     }
-    public String login(String login,String passwordHash) throws IncorrectLoginOrPasswordException {
+    public String login(String login,String rawPassword) {
         Optional<Users> userEntity = userRepository.findUserByLogin(login);
         if (userEntity.isEmpty()){
             throw new IncorrectLoginOrPasswordException("No user with this login");
         }
-        if (encoder.matches(passwordHash,userEntity.get().getPasswordHash())){
+
+        if (encoder.matches(rawPassword,userEntity.get().getPasswordHash())){
             Long userId = userEntity.get().getId();
             HashMap<String,Object> claims=new HashMap<>(){};
             claims.put("login",login);
             claims.put("userId",String.valueOf(userId));
+            claims.put("role", RolesEnum.User);
         return jwToken.createToken(claims,login);
         }
         throw new IncorrectLoginOrPasswordException("Login or password is incorrect");

@@ -1,6 +1,7 @@
 package com.example.clothesshop.model;
 
 import com.example.clothesshop.enums.SizeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Table
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Clothes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
