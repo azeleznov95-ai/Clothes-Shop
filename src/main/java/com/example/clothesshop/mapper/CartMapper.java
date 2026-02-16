@@ -17,5 +17,12 @@ public class CartMapper {
         response.setUserId(entity.getId());
         return response;
     }
+    public Cart toEntity(CartResponseDto response){
+        var entity = new Cart();
+        entity.setUserId(response.getUserId());
+        entity.setCartStatus(response.getCartStatus());
+        entity.setCartItems(response.getCartItems());
+        return entity;
+    }
 
 }
