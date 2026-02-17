@@ -3,6 +3,7 @@ package com.example.clothesshop.service;
 import com.example.clothesshop.dto.CartItemToChangeAmountRequestDto;
 import com.example.clothesshop.dto.CartResponseDto;
 import com.example.clothesshop.enums.CartStatus;
+import com.example.clothesshop.enums.SizeEnum;
 import com.example.clothesshop.exeptions.BadCartRequestException;
 import com.example.clothesshop.exeptions.CartNotFoundException;
 import com.example.clothesshop.mapper.CartMapper;
@@ -107,7 +108,7 @@ public class CartService {
 
 
     }
-    public CartResponseDto addToCart(String token,Long itemId){
+    public CartResponseDto addToCart(String token, Long itemId, SizeEnum size){
         var cartOpt = cartRepository.findCartByUserId(jwToken.extractUserId(token));
         Cart cart;
         if (cartOpt.isEmpty()){
@@ -131,6 +132,7 @@ public class CartService {
         cartItem.setAddedAt(LocalDateTime.now());
         cartItem.setImageUrl(cloth.getImageUrl());
         cartItem.setPriceSnapshot(cloth.getPrice());
+        cartItem.setSize(size);
         cart.setCartStatus(CartStatus.UPDATED);
         cartItemRepository.save(cartItem);
         var cartItems =cart.getCartItems();
@@ -155,4 +157,6 @@ public class CartService {
             var totalPrice = getTotalPrice(cart);
             cartRepository.save(cart);
             return cartMapper.toResponse(cart,totalPrice);
-}}
+}
+
+}

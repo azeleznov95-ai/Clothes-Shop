@@ -1,9 +1,11 @@
 package com.example.clothesshop.service;
 
+
 import com.example.clothesshop.dto.ClothChangeAmountRequestDto;
 import com.example.clothesshop.dto.ClothesAddRequestDto;
 import com.example.clothesshop.dto.ClothesResponseDto;
 import com.example.clothesshop.exeptions.BadClothesRequestException;
+import com.example.clothesshop.exeptions.ClothNotFoundException;
 import com.example.clothesshop.mapper.ClothesMapper;
 import com.example.clothesshop.model.Clothes;
 import com.example.clothesshop.repository.ClothesRepository;
@@ -81,4 +83,25 @@ private final ClothesMapper mapper;
         clothesRepository.save(cloth);
         return mapper.toResponse(cloth);
     }
-}
+    public ClothesResponseDto hide(Long id){
+        var clothOpt = clothesRepository.findClothesById(id);
+        if (clothOpt.isEmpty()){
+            throw new ClothNotFoundException("Cloth is not found");
+        }
+        var cloth = clothOpt.get();
+        cloth.setActive(false);
+        clothesRepository.save(cloth);
+        return mapper.toResponse(cloth);
+    }
+    public ClothesResponseDto show(Long id){
+        var clothOpt = clothesRepository.findClothesById(id);
+        if (clothOpt.isEmpty()){
+            throw new ClothNotFoundException("Cloth is not found");
+        }
+        var cloth = clothOpt.get();
+        cloth.setActive(true);
+        clothesRepository.save(cloth);
+        return mapper.toResponse(cloth);
+    }
+    }
+

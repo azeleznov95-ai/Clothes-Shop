@@ -20,9 +20,10 @@ public class Users {
 
         @Column(nullable = false)
         private String passwordHash;
-        @Column(nullable = false,unique = true)
+        @Column(nullable = false)
+        //todo: tgid tgusername при регистрации указывать
         private String telegramUsername="0";
-        @Column(nullable = true,unique = true)
+        @Column()
         private  Long telegramId;
         @Column(nullable = false)
         private RolesEnum role= RolesEnum.User;

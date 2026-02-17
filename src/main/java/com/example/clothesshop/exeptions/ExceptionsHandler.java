@@ -102,4 +102,20 @@
             errorResponse.setMessage(ex.getMessage());
             return ResponseEntity.status(404).body(errorResponse);
         }
+        @ExceptionHandler(UserNotFoundException.class)
+        public ResponseEntity<ErrorResponseDto> UserNotFoundExceptionHandle(UserNotFoundException ex) {
+            ErrorResponseDto errorResponse = new ErrorResponseDto();
+            errorResponse.setStatus(404);
+            errorResponse.setTimestamp(LocalDateTime.now());
+            errorResponse.setMessage(ex.getMessage());
+            return ResponseEntity.status(404).body(errorResponse);
+        }
+        @ExceptionHandler(ClothNotFoundException.class)
+        public ResponseEntity<ErrorResponseDto> ClothNotFoundExceptionHandle(ClothNotFoundException ex) {
+            ErrorResponseDto errorResponse = new ErrorResponseDto();
+            errorResponse.setStatus(404);
+            errorResponse.setTimestamp(LocalDateTime.now());
+            errorResponse.setMessage(ex.getMessage());
+            return ResponseEntity.status(404).body(errorResponse);
+        }
     }

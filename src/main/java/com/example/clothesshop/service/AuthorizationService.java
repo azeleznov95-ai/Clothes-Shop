@@ -28,6 +28,7 @@ public class AuthorizationService {
         if (userRepositoryEntity.isPresent()){
             throw new ConflictException("Login already exists");
         }
+        //todo: exception when login is not unique
         String passwordHash = encoder.encode(password);
         Users userEntity = new Users();
         userEntity.setPasswordHash(passwordHash);

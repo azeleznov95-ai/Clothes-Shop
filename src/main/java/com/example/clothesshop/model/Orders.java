@@ -1,12 +1,14 @@
 package com.example.clothesshop.model;
-
 import com.example.clothesshop.enums.OrderStatusEnum;
-import com.example.clothesshop.enums.SizeEnum;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -17,26 +19,23 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private Users user;
-    @Column(nullable = false)
-    private String orderedCloth;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
     @PrePersist
-    public void setCreatedAt(){
+    public void setCreatedAt() {
         this.createdAt = LocalDateTime.now();
     }
+
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SizeEnum size;
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
     private OrderStatusEnum orderStatus;
 
 
-
-
-
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems = new ArrayList<>();
 }

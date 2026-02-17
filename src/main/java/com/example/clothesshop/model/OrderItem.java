@@ -7,37 +7,33 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-import java.time.LocalDateTime;
 
 @Entity
 @Table
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class CartItem {
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
-    private SizeEnum size;
+
     @Column
     private Integer priceSnapshot;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn()
     private Clothes cloth;
-    @Column
-    private LocalDateTime addedAt;
 
-
-    @PrePersist
-    public void setAddedAt(){
-        addedAt = LocalDateTime.now();
-    }
     @Column
     private Integer amount;
     @Column
     private String imageUrl;
-
+    @ManyToOne
+    @JoinColumn()
+    private Orders order;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private SizeEnum size;
 
 
 
