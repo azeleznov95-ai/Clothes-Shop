@@ -1,6 +1,6 @@
 package com.example.clothesshop.dto;
 
-import com.example.clothesshop.enums.CartStatus;
+import com.example.clothesshop.enums.CartStatusEnum;
 import com.example.clothesshop.model.CartItem;
 
 
@@ -17,7 +17,7 @@ public class CartResponseDto {
         private Long userId;
 
         private List<CartItem> cartItems = new ArrayList<>();
-        private CartStatus cartStatus = CartStatus.EMPTY;
+        private CartStatusEnum cartStatus = CartStatusEnum.EMPTY;
         private Integer totalPrice;
 
 

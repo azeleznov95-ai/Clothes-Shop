@@ -1,20 +1,16 @@
 package com.example.clothesshop.mapper;
 
-
-import com.example.clothesshop.model.CartItem;
-import com.example.clothesshop.model.OrderItem;
+import com.example.clothesshop.dto.OrderResponseDto;
+import com.example.clothesshop.model.Orders;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OrderMapper {
-    public OrderItem cartItemToOrderItem(CartItem cartItem){
-        OrderItem orderItem = new OrderItem();
-        orderItem.setAmount(cartItem.getAmount());
-        orderItem.setPriceSnapshot(cartItem.getPriceSnapshot());
-        orderItem.setCloth(cartItem.getCloth());
-        orderItem.setImageUrl(cartItem.getImageUrl());
-        orderItem.setSize(cartItem.getSize());
-        return orderItem;
-
+    public OrderResponseDto toResponse(Orders entity,Long userId){
+        var response = new OrderResponseDto();
+        response.setOrderStatus(entity.getOrderStatus());
+        response.setUserId(userId);
+        response.setOrderItems(entity.getOrderItems());
+        return response;
     }
 }

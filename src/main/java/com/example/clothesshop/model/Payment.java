@@ -1,8 +1,8 @@
 package com.example.clothesshop.model;
 
-import com.example.clothesshop.enums.Currency;
-import com.example.clothesshop.enums.PaymentStatus;
-import com.example.clothesshop.enums.Providers;
+import com.example.clothesshop.enums.CurrencyEnum;
+import com.example.clothesshop.enums.PaymentStatusEnum;
+import com.example.clothesshop.enums.ProvidersEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,17 +23,17 @@ public class Payment {
     private Long orderId;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Providers provider;
+    private ProvidersEnum provider;
     @Column(nullable = false)
     private UUID externalPaymentId;
     @Column(nullable = false)
     private Integer amount;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Currency currency;
+    private CurrencyEnum currency;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private PaymentStatusEnum paymentStatus;
     @Column
     private LocalDateTime createdAt;
     @PrePersist

@@ -5,9 +5,11 @@ import com.example.clothesshop.dto.ClothChangeAmountRequestDto;
 import com.example.clothesshop.dto.ClothesAddRequestDto;
 import com.example.clothesshop.dto.ClothesResponseDto;
 import com.example.clothesshop.exeptions.BadClothesRequestException;
+import com.example.clothesshop.exeptions.CategoryNotFoundException;
 import com.example.clothesshop.exeptions.ClothNotFoundException;
 import com.example.clothesshop.mapper.ClothesMapper;
 import com.example.clothesshop.model.Clothes;
+import com.example.clothesshop.repository.CategoryRepository;
 import com.example.clothesshop.repository.ClothesRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +23,12 @@ import java.util.Optional;
 public class ClothesService {
 private final ClothesRepository clothesRepository;
 private final ClothesMapper mapper;
-    ClothesService(ClothesRepository clothesRepository, ClothesMapper mapper){
+    private final CategoryRepository categoryRepository;
+
+    ClothesService(ClothesRepository clothesRepository, ClothesMapper mapper, CategoryRepository categoryRepository){
         this.clothesRepository=clothesRepository;
         this.mapper = mapper;
+        this.categoryRepository = categoryRepository;
     }
     public ClothesResponseDto create(ClothesAddRequestDto requestDto){
         if (requestDto.getName()==null|| requestDto.getName().isBlank()){
@@ -41,7 +46,21 @@ private final ClothesMapper mapper;
         if (requestDto.getRemainingAmount()<0){
             throw new BadClothesRequestException("remaining amount must be more than zero or equal");
         }
-        var entity = mapper.toEntity(requestDto);
+        var slug = requestDto.getCategorySlug();
+        if (slug == null||slug.isBlank()){
+            throw new CategoryNotFoundException("Slug is empty");
+        }
+        if (!categoryRepository.existsBySlug(slug)){
+            throw new CategoryNotFoundException("No category with this slug");
+        }
+
+
+        var categoryOpt = categoryRepository.findBySlug(slug);
+        if (categoryOpt.isEmpty()){
+            throw new CategoryNotFoundException("No available category with this slug");
+        }
+        var category = categoryOpt.get();
+        var entity = mapper.toEntity(requestDto,category);
         var saved = clothesRepository.save(entity);
         return mapper.toResponse(saved);
     }
@@ -103,5 +122,15 @@ private final ClothesMapper mapper;
         clothesRepository.save(cloth);
         return mapper.toResponse(cloth);
     }
+
+    public List<ClothesResponseDto> filerClothByCategory(String slug) {
+        var listClothes = clothesRepository.findAllClothesByCategorySlug(slug);
+        List<ClothesResponseDto> listResponse = new ArrayList<>();
+        for (Clothes cloth: listClothes){
+            var response = mapper.toResponse(cloth);
+            listResponse.add(response);
+        }
+        return listResponse;
     }
+}
 

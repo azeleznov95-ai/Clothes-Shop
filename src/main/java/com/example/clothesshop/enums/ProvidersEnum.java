@@ -1,5 +1,5 @@
 package com.example.clothesshop.enums;
 
-public enum Providers {
+public enum ProvidersEnum {
     MOCK,STRIPE, YOOKASSA
 }

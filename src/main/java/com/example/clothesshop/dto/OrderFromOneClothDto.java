@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateOrderRequestDto {
-    private Long clothId;
+public class OrderFromOneClothDto {
+    private Long itemId;
     private SizeEnum size;
     private Integer amount;
 }

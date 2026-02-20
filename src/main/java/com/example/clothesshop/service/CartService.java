@@ -2,7 +2,7 @@ package com.example.clothesshop.service;
 
 import com.example.clothesshop.dto.CartItemToChangeAmountRequestDto;
 import com.example.clothesshop.dto.CartResponseDto;
-import com.example.clothesshop.enums.CartStatus;
+import com.example.clothesshop.enums.CartStatusEnum;
 import com.example.clothesshop.enums.SizeEnum;
 import com.example.clothesshop.exeptions.BadCartRequestException;
 import com.example.clothesshop.exeptions.CartNotFoundException;
@@ -133,7 +133,7 @@ public class CartService {
         cartItem.setImageUrl(cloth.getImageUrl());
         cartItem.setPriceSnapshot(cloth.getPrice());
         cartItem.setSize(size);
-        cart.setCartStatus(CartStatus.UPDATED);
+        cart.setCartStatus(CartStatusEnum.UPDATED);
         cartItemRepository.save(cartItem);
         var cartItems =cart.getCartItems();
         cartItems.add(cartItem);

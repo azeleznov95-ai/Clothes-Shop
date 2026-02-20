@@ -23,20 +23,21 @@ public class AuthorizationService {
         this.jwToken = jwToken;
 
     }
-    public String register(String login, String password) throws ConflictException, IncorrectLoginOrPasswordException {
+    public String register(String login, String password,String telegramUs)  {
         Optional<Users> userRepositoryEntity =userRepository.findUserByLogin(login);
         if (userRepositoryEntity.isPresent()){
             throw new ConflictException("Login already exists");
         }
-        //todo: exception when login is not unique
+
         String passwordHash = encoder.encode(password);
         Users userEntity = new Users();
         userEntity.setPasswordHash(passwordHash);
         userEntity.setLogin(login);
+        userEntity.setTelegramUsername(telegramUs);
         userRepository.save(userEntity);
-        return login(login,password);
+        return login(login,password,telegramUs);
     }
-    public String login(String login,String rawPassword) {
+    public String login(String login,String rawPassword,String telegramUs) {
         Optional<Users> userEntity = userRepository.findUserByLogin(login);
         if (userEntity.isEmpty()){
             throw new IncorrectLoginOrPasswordException("No user with this login");
@@ -48,6 +49,7 @@ public class AuthorizationService {
             claims.put("login",login);
             claims.put("userId",String.valueOf(userId));
             claims.put("role", RolesEnum.User);
+            claims.put("tg",telegramUs);
         return jwToken.createToken(claims,login);
         }
         throw new IncorrectLoginOrPasswordException("Login or password is incorrect");

@@ -20,7 +20,8 @@ public class AuthController {
     public ResponseEntity<String> registration(@RequestBody @Valid AuthorizationRequestDto authRequest){
         String login = authRequest.getLogin();
         String password=authRequest.getPassword();
-        String jwToken =authService.register(login,password);
+        String telegramUs = authRequest.getTelegramUserName();
+        String jwToken =authService.register(login,password,telegramUs);
         return ResponseEntity.status(201).body(jwToken);
 
 
@@ -29,7 +30,8 @@ public class AuthController {
     public  ResponseEntity<String> login(@RequestBody @Valid AuthorizationRequestDto authRequest){
         String login = authRequest.getLogin();
         String password = authRequest.getPassword();
-        String jwToken = authService.login(login,password);
+        String telegramUs = authRequest.getTelegramUserName();
+        String jwToken = authService.login(login,password, telegramUs);
         return ResponseEntity.status(200).header("Authorization", jwToken).body(jwToken);
     }
 }

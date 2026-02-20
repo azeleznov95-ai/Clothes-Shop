@@ -9,6 +9,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class ClothesAddRequestDto {
+
     private String name;
     private Integer price;
     private String description;
@@ -16,5 +17,7 @@ public class ClothesAddRequestDto {
     private String imageUrl;
     private Integer remainingAmount;
     private boolean active=true;
+    private String categorySlug;
+
 
 }

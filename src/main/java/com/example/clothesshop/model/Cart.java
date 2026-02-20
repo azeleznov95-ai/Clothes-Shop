@@ -1,6 +1,6 @@
 package com.example.clothesshop.model;
 
-import com.example.clothesshop.enums.CartStatus;
+import com.example.clothesshop.enums.CartStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +21,7 @@ public class Cart {
     @JoinColumn()
     private List<CartItem> cartItems;
     @Column
-    CartStatus cartStatus = CartStatus.EMPTY;
+    CartStatusEnum cartStatus = CartStatusEnum.EMPTY;
 
 
 }

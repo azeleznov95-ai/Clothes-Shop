@@ -41,4 +41,8 @@ public class Clothes {
     protected void setCreate(){
         this.createdAt = LocalDateTime.now();
     }
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Category category;
+
 }

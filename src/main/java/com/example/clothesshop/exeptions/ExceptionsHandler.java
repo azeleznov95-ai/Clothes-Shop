@@ -118,4 +118,12 @@
             errorResponse.setMessage(ex.getMessage());
             return ResponseEntity.status(404).body(errorResponse);
         }
+        @ExceptionHandler(CategoryNotFoundException.class)
+        public ResponseEntity<ErrorResponseDto> CategoryNotFoundExceptionHandle(CategoryNotFoundException ex) {
+            ErrorResponseDto errorResponse = new ErrorResponseDto();
+            errorResponse.setStatus(404);
+            errorResponse.setTimestamp(LocalDateTime.now());
+            errorResponse.setMessage(ex.getMessage());
+            return ResponseEntity.status(404).body(errorResponse);
+        }
     }

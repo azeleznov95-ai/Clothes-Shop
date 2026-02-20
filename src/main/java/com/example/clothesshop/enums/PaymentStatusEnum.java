@@ -1,5 +1,5 @@
 package com.example.clothesshop.enums;
 
-public enum PaymentStatus {
+public enum PaymentStatusEnum {
     CREATED, PENDING,FAILED,SUCCEEDED
 }

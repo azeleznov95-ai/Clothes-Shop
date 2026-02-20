@@ -40,15 +40,21 @@ public class ClothesController {
         var changedResponse =clothesService.changeAmount(changeAmountRequest);
         return ResponseEntity.status(200).body(changedResponse);
     }
-    @PatchMapping("/{id}/hide")
-    public ResponseEntity<ClothesResponseDto> hideCloth(@RequestParam Long id){
+    @PatchMapping("/admin/{id}/hide")
+    public ResponseEntity<ClothesResponseDto> hideCloth(@PathVariable Long id){
         var clothesResponse = clothesService.hide(id);
         return ResponseEntity.ok(clothesResponse);
     }
-    @PatchMapping("/{id}/show")
-    public ResponseEntity<ClothesResponseDto> showCloth(@RequestParam Long id){
+    @PatchMapping("/admin/{id}/show")
+    public ResponseEntity<ClothesResponseDto> showCloth(@PathVariable Long id){
         var clothesResponse = clothesService.show(id);
         return ResponseEntity.ok(clothesResponse);
     }
+    @GetMapping("/{slug}")
+    public ResponseEntity<List<ClothesResponseDto>> filterClothByCategory(@PathVariable String slug){
+        var clothesResponse = clothesService.filerClothByCategory(slug);
+        return ResponseEntity.ok(clothesResponse);
 
+
+    }
 }

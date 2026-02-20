@@ -1,5 +1,5 @@
 package com.example.clothesshop.enums;
 
-public enum CartStatus {
+public enum CartStatusEnum {
     UPDATED,ORDERED,EMPTY,
 }

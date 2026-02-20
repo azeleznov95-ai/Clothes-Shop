@@ -19,5 +19,6 @@ public class ClothesResponseDto {
     private Integer remainingAmount;
     private boolean active;
     private LocalDateTime createdAt;
-
+    private String categoryName;
+    private String categorySlug;
 }
