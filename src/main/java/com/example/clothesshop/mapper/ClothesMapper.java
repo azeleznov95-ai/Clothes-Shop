@@ -33,6 +33,7 @@ public class ClothesMapper {
         resp.setActive(entity.isActive());
         resp.setRemainingAmount(entity.getRemainingAmount());
         resp.setCategoryName(entity.getCategory().getName());
+        resp.setCategorySlug(entity.getCategory().getSlug());
         return resp;
     }
 }

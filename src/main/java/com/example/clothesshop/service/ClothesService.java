@@ -124,7 +124,7 @@ private final ClothesMapper mapper;
     }
 
     public List<ClothesResponseDto> filerClothByCategory(String slug) {
-        var listClothes = clothesRepository.findAllClothesByCategorySlug(slug);
+        var listClothes = clothesRepository.findAllClothesByCategorySlugAndActiveIsTrue(slug);
         List<ClothesResponseDto> listResponse = new ArrayList<>();
         for (Clothes cloth: listClothes){
             var response = mapper.toResponse(cloth);

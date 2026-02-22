@@ -112,7 +112,9 @@ public class CartService {
         var cartOpt = cartRepository.findCartByUserId(jwToken.extractUserId(token));
         Cart cart;
         if (cartOpt.isEmpty()){
-            cart = cartMapper.toEntity(getCart(token));
+            cart = new Cart();
+            cart.setUserId(jwToken.extractUserId(token));
+            cart.setCartItems(new ArrayList<>());
             cartRepository.save(cart);
         }
         else{

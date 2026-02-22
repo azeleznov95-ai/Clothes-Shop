@@ -50,7 +50,7 @@ public class ClothesController {
         var clothesResponse = clothesService.show(id);
         return ResponseEntity.ok(clothesResponse);
     }
-    @GetMapping("/{slug}")
+    @GetMapping("/by-category/{slug}")
     public ResponseEntity<List<ClothesResponseDto>> filterClothByCategory(@PathVariable String slug){
         var clothesResponse = clothesService.filerClothByCategory(slug);
         return ResponseEntity.ok(clothesResponse);

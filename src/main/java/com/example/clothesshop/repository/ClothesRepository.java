@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ClothesRepository extends JpaRepository<Clothes,Long> {
 
-    List<Clothes> findAllClothesByCategorySlug(String slug);
+    List<Clothes> findAllClothesByCategorySlugAndActiveIsTrue(String slug);
 
     Optional<Clothes> findClothesById(Long id);
 

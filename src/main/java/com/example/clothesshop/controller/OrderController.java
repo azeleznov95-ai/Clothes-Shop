@@ -16,7 +16,7 @@ public class OrderController {
         this.orderService=  orderService;
 
     }
-    @PostMapping("/{token}")
+    @PostMapping("/cart/{token}")
     public ResponseEntity<OrderResponseDto> setOrderFromCart(@PathVariable String token){
         var response = orderService.setOrderFromCart(token);
         return ResponseEntity.ok(response);

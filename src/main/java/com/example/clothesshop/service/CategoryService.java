@@ -111,7 +111,7 @@ public class CategoryService {
         if (!updated) {
             throw new EmptyCategoryException("Nothing to update");
         }
-        var listToUpdate = clothesRepository.findAllClothesByCategorySlug(slug);
+        var listToUpdate = clothesRepository.findAllClothesByCategorySlugAndActiveIsTrue(slug);
         if (!listToUpdate.isEmpty()){
         for(Clothes cloth : listToUpdate) {
             cloth.setCategory(category);
