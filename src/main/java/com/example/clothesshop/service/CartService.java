@@ -13,10 +13,8 @@ import com.example.clothesshop.model.CartItem;
 import com.example.clothesshop.repository.CartItemRepository;
 import com.example.clothesshop.repository.CartRepository;
 import com.example.clothesshop.repository.ClothesRepository;
-
 import com.example.clothesshop.security.JWToken;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -51,7 +49,7 @@ public class CartService {
         return totalPrice;
 
     }
-    public CartResponseDto getCart(String token){
+    public CartResponseDto getCart( String token){
         Long userId = jwToken.extractUserId(token);
         var cartOpt = cartRepository.findCartByUserId(userId);
         if (cartOpt.isEmpty()){

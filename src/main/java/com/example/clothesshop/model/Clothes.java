@@ -1,6 +1,6 @@
 package com.example.clothesshop.model;
 
-import com.example.clothesshop.enums.SizeEnum;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,17 +24,13 @@ public class Clothes {
     private Integer price;
     @Column()
     private String description;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable( joinColumns = @JoinColumn())
-    @Enumerated(EnumType.STRING)
-    @Column()
-    private Set<SizeEnum> setSize;
+    @OneToMany(mappedBy = "clothes", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ClothVariant> setClothesVariants;
     @Column()
     private String imageUrl;
     @Column()
     private boolean active=true;
-    @Column(nullable = false)
-    private Integer remainingAmount=0;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
     @PrePersist

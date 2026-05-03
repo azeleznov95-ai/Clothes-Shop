@@ -1,14 +1,17 @@
 package com.example.clothesshop.service;
 
+import com.example.clothesshop.dto.AuthorizationRequestDto;
 import com.example.clothesshop.enums.RolesEnum;
 import com.example.clothesshop.exeptions.ConflictException;
 import com.example.clothesshop.exeptions.IncorrectLoginOrPasswordException;
 import com.example.clothesshop.model.Users;
 import com.example.clothesshop.repository.UserRepository;
 import com.example.clothesshop.security.JWToken;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -23,36 +26,47 @@ public class AuthorizationService {
         this.jwToken = jwToken;
 
     }
-    public String register(String login, String password,String telegramUs)  {
+    public ResponseCookie register(AuthorizationRequestDto authRequest)  {
+        String login = authRequest.getLogin();
         Optional<Users> userRepositoryEntity =userRepository.findUserByLogin(login);
         if (userRepositoryEntity.isPresent()){
             throw new ConflictException("Login already exists");
         }
 
-        String passwordHash = encoder.encode(password);
+        String passwordHash = encoder.encode(authRequest.getPassword());
         Users userEntity = new Users();
         userEntity.setPasswordHash(passwordHash);
         userEntity.setLogin(login);
-        userEntity.setTelegramUsername(telegramUs);
         userRepository.save(userEntity);
-        return login(login,password,telegramUs);
+        return login(authRequest);
     }
-    public String login(String login,String rawPassword,String telegramUs) {
+
+    public ResponseCookie login(AuthorizationRequestDto authRequest) {
+        String login = authRequest.getLogin();
         Optional<Users> userEntity = userRepository.findUserByLogin(login);
         if (userEntity.isEmpty()){
             throw new IncorrectLoginOrPasswordException("No user with this login");
         }
 
-        if (encoder.matches(rawPassword,userEntity.get().getPasswordHash())){
+        if (encoder.matches(authRequest.getPassword(), userEntity.get().getPasswordHash())){
             Long userId = userEntity.get().getId();
             HashMap<String,Object> claims=new HashMap<>(){};
             claims.put("login",login);
             claims.put("userId",String.valueOf(userId));
             claims.put("role", RolesEnum.User);
-            claims.put("tg",telegramUs);
-        return jwToken.createToken(claims,login);
+            var jwt = jwToken.createToken(claims, login);
+            return buildAccessTokenCookie(jwt);
         }
         throw new IncorrectLoginOrPasswordException("Login or password is incorrect");
     }
 
+    private ResponseCookie buildAccessTokenCookie(String jwt) {
+        return ResponseCookie.from("access_token", jwt)
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(Duration.ofHours(10))
+                .build();
+    }
 }

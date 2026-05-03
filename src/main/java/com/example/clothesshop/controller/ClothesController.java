@@ -31,8 +31,8 @@ public class ClothesController {
        return ResponseEntity.status(200).body(response);
     }
     @GetMapping()
-    public  ResponseEntity<List<ClothesResponseDto>> getList(){
-        return ResponseEntity.status(200).body(clothesService.getList());
+    public ResponseEntity<List<ClothesResponseDto>> getAll(){
+        return ResponseEntity.status(200).body(clothesService.getAll());
     }
     @PatchMapping("/admin")
     @Transactional
@@ -51,8 +51,8 @@ public class ClothesController {
         return ResponseEntity.ok(clothesResponse);
     }
     @GetMapping("/by-category/{slug}")
-    public ResponseEntity<List<ClothesResponseDto>> filterClothByCategory(@PathVariable String slug){
-        var clothesResponse = clothesService.filerClothByCategory(slug);
+    public ResponseEntity<List<ClothesResponseDto>> filterClothesByCategory(@PathVariable String slug){
+        var clothesResponse = clothesService.filterClothesByCategory(slug);
         return ResponseEntity.ok(clothesResponse);
 
 

@@ -26,6 +26,7 @@ public class Users {
         @Column()
         private  Long telegramId;
         @Column(nullable = false)
+        @Enumerated(EnumType.STRING)
         private RolesEnum role= RolesEnum.User;
 
 

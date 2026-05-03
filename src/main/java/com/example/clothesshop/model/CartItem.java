@@ -19,6 +19,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
+    @Enumerated(EnumType.STRING)
     private SizeEnum size;
     @Column
     private Integer priceSnapshot;

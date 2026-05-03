@@ -1,13 +1,19 @@
 services:
   db:
     image: postgres:15
+    ports:
+      - "5433:5432"
     environment:
       POSTGRES_DB: clothes
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
-    ports:
-      - 5432:5432
-
+    volumes:
+      - ./distr/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d clothes"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   app:
     build: .
     ports:
@@ -17,4 +23,5 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 123
     depends_on:
-      - db
+      db:
+        condition: service_healthy

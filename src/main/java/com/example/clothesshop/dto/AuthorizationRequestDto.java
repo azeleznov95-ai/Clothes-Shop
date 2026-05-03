@@ -15,7 +15,4 @@ public class AuthorizationRequestDto {
     @NonNull
     @NotBlank
     String password;
-    @NonNull
-    @NotBlank
-    String telegramUserName;
 }

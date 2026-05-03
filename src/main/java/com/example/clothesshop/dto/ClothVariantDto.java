@@ -6,8 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ClothChangeAmountRequestDto {
-    Long Id;
-    Integer delta;
-    SizeEnum size;
+public class ClothVariantDto {
+    private SizeEnum size;
+    private Integer remainingAmount;
 }

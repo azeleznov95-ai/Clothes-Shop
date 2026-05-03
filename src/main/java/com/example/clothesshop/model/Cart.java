@@ -21,6 +21,7 @@ public class Cart {
     @JoinColumn()
     private List<CartItem> cartItems;
     @Column
+    @Enumerated(EnumType.STRING)
     CartStatusEnum cartStatus = CartStatusEnum.EMPTY;
 
 

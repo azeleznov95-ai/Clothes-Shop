@@ -25,7 +25,7 @@ public class CategoryService {
 
     CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper, ClothesService clothesService, ClothesRepository clothesRepository){
         this.categoryRepository = categoryRepository;
-        this. categoryMapper = categoryMapper;
+        this.categoryMapper = categoryMapper;
         this.clothesService = clothesService;
         this.clothesRepository = clothesRepository;
     }
@@ -72,7 +72,7 @@ public class CategoryService {
         if (categoryOpt.isEmpty()){
             throw new CategoryNotFoundException("Nothing to delete");
         }
-        if (!clothesService.filerClothByCategory(slug).isEmpty()){
+        if (!clothesService.filterClothesByCategory(slug).isEmpty()){
             throw new ConflictException("Category can't be delete cause there is clothes that linked on it");
         }
         var category = categoryOpt.get();

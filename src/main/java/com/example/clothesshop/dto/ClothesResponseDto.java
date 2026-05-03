@@ -16,7 +16,6 @@ public class ClothesResponseDto {
     private String description;
     private Set<SizeEnum> sizes;
     private String imageUrl;
-    private Integer remainingAmount;
     private boolean active;
     private LocalDateTime createdAt;
     private String categoryName;
